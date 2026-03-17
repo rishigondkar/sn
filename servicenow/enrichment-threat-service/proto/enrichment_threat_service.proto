@@ -1,0 +1,174 @@
+syntax = "proto3";
+
+package enrichment_threat_service;
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/servicenow/enrichment-threat-service/proto/enrichment_threat_service";
+
+service EnrichmentThreatService {
+  rpc UpsertEnrichmentResult(UpsertEnrichmentResultRequest) returns (UpsertEnrichmentResultResponse);
+  rpc UpsertThreatLookupResult(UpsertThreatLookupResultRequest) returns (UpsertThreatLookupResultResponse);
+  rpc ListEnrichmentResultsByCase(ListEnrichmentResultsByCaseRequest) returns (ListEnrichmentResultsByCaseResponse);
+  rpc ListEnrichmentResultsByObservable(ListEnrichmentResultsByObservableRequest) returns (ListEnrichmentResultsByObservableResponse);
+  rpc ListThreatLookupResultsByCase(ListThreatLookupResultsByCaseRequest) returns (ListThreatLookupResultsByCaseResponse);
+  rpc ListThreatLookupResultsByObservable(ListThreatLookupResultsByObservableRequest) returns (ListThreatLookupResultsByObservableResponse);
+  rpc GetThreatLookupSummaryByObservable(GetThreatLookupSummaryByObservableRequest) returns (GetThreatLookupSummaryByObservableResponse);
+}
+
+message UpsertEnrichmentResultRequest {
+  string id = 1;
+  optional string case_id = 2;
+  optional string observable_id = 3;
+  string enrichment_type = 4;
+  string source_name = 5;
+  optional string source_record_id = 6;
+  string status = 7;
+  optional string summary = 8;
+  string result_data_json = 9;
+  optional double score = 10;
+  optional double confidence = 11;
+  optional google.protobuf.Timestamp requested_at = 12;
+  google.protobuf.Timestamp received_at = 13;
+  optional google.protobuf.Timestamp expires_at = 14;
+  optional string last_updated_by = 15;
+}
+
+message UpsertEnrichmentResultResponse {
+  EnrichmentResult result = 1;
+}
+
+message UpsertThreatLookupResultRequest {
+  string id = 1;
+  optional string case_id = 2;
+  string observable_id = 3;
+  string lookup_type = 4;
+  string source_name = 5;
+  optional string source_record_id = 6;
+  optional string verdict = 7;
+  optional double risk_score = 8;
+  optional double confidence_score = 9;
+  optional string tags_json = 10;
+  optional string matched_indicators_json = 11;
+  optional string summary = 12;
+  string result_data_json = 13;
+  optional google.protobuf.Timestamp queried_at = 14;
+  google.protobuf.Timestamp received_at = 15;
+  optional google.protobuf.Timestamp expires_at = 16;
+}
+
+message UpsertThreatLookupResultResponse {
+  ThreatLookupResult result = 1;
+}
+
+message ListEnrichmentResultsByCaseRequest {
+  string case_id = 1;
+  int32 page_size = 2;
+  string page_token = 3;
+  optional string source_name = 4;
+  optional string enrichment_type = 5;
+  optional bool active_only = 6;
+}
+
+message ListEnrichmentResultsByCaseResponse {
+  repeated EnrichmentResult items = 1;
+  string next_page_token = 2;
+}
+
+message ListEnrichmentResultsByObservableRequest {
+  string observable_id = 1;
+  int32 page_size = 2;
+  string page_token = 3;
+  optional string source_name = 4;
+  optional string enrichment_type = 5;
+  optional bool active_only = 6;
+}
+
+message ListEnrichmentResultsByObservableResponse {
+  repeated EnrichmentResult items = 1;
+  string next_page_token = 2;
+}
+
+message ListThreatLookupResultsByCaseRequest {
+  string case_id = 1;
+  int32 page_size = 2;
+  string page_token = 3;
+  optional string source_name = 4;
+  optional string lookup_type = 5;
+  optional string verdict = 6;
+  optional bool active_only = 7;
+}
+
+message ListThreatLookupResultsByCaseResponse {
+  repeated ThreatLookupResult items = 1;
+  string next_page_token = 2;
+}
+
+message ListThreatLookupResultsByObservableRequest {
+  string observable_id = 1;
+  int32 page_size = 2;
+  string page_token = 3;
+  optional string source_name = 4;
+  optional string lookup_type = 5;
+  optional string verdict = 6;
+  optional bool active_only = 7;
+}
+
+message ListThreatLookupResultsByObservableResponse {
+  repeated ThreatLookupResult items = 1;
+  string next_page_token = 2;
+}
+
+message GetThreatLookupSummaryByObservableRequest {
+  string observable_id = 1;
+}
+
+message GetThreatLookupSummaryByObservableResponse {
+  string observable_id = 1;
+  int32 total_count = 2;
+  optional string highest_verdict = 3;
+  optional double max_risk_score = 4;
+  repeated string source_names = 5;
+  google.protobuf.Timestamp latest_received_at = 6;
+}
+
+message EnrichmentResult {
+  string id = 1;
+  string case_id = 2;
+  string observable_id = 3;
+  string enrichment_type = 4;
+  string source_name = 5;
+  string source_record_id = 6;
+  string status = 7;
+  string summary = 8;
+  string result_data_json = 9;
+  double score = 10;
+  double confidence = 11;
+  google.protobuf.Timestamp requested_at = 12;
+  google.protobuf.Timestamp received_at = 13;
+  google.protobuf.Timestamp expires_at = 14;
+  string last_updated_by = 15;
+  google.protobuf.Timestamp created_at = 16;
+  google.protobuf.Timestamp updated_at = 17;
+}
+
+message ThreatLookupResult {
+  string id = 1;
+  string case_id = 2;
+  string observable_id = 3;
+  string lookup_type = 4;
+  string source_name = 5;
+  string source_record_id = 6;
+  string verdict = 7;
+  double risk_score = 8;
+  double confidence_score = 9;
+  string tags_json = 10;
+  string matched_indicators_json = 11;
+  string summary = 12;
+  string result_data_json = 13;
+  google.protobuf.Timestamp queried_at = 14;
+  google.protobuf.Timestamp received_at = 15;
+  google.protobuf.Timestamp expires_at = 16;
+  google.protobuf.Timestamp created_at = 17;
+  google.protobuf.Timestamp updated_at = 18;
+}

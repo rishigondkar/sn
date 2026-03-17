@@ -1,0 +1,1 @@
+ALTER TABLE observables ADD COLUMN IF NOT EXISTS notes TEXT;

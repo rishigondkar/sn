@@ -1,0 +1,13 @@
+.git
+.gitignore
+**/node_modules
+**/.env
+**/.env.*
+**/dist
+*.md
+!START_SERVICES.md
+**/__pycache__
+**/*.test.go
+**/testdata
+**/.cursor
+**/agent-transcripts

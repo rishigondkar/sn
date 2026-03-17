@@ -1,0 +1,12 @@
+:80
+handle /api* {
+  reverse_proxy localhost:8080
+}
+handle /health* {
+  reverse_proxy localhost:8080
+}
+handle {
+  root * /app/frontend
+  file_server
+  try_files {path} /index.html
+}

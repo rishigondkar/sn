@@ -1,0 +1,1 @@
+ALTER TABLE observables DROP COLUMN IF EXISTS notes;

@@ -1,0 +1,42 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: cursor
+      POSTGRES_PASSWORD: qwerty
+      POSTGRES_DB: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./scripts/create_dbs.sql:/docker-entrypoint-initdb.d/01-create-dbs.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U cursor -d postgres"]
+      interval: 2s
+      timeout: 5s
+      retries: 10
+
+  app:
+    build: .
+    ports:
+      - "8089:80"
+    environment:
+      PGHOST: postgres
+      PGUSER: cursor
+      PGPASSWORD: qwerty
+      DATABASE_URL: postgres://cursor:qwerty@postgres:5432/case_db?sslmode=disable
+      CASE_DATABASE_URL: postgres://cursor:qwerty@postgres:5432/case_db?sslmode=disable
+      ENRICHMENT_DATABASE_URL: postgres://cursor:qwerty@postgres:5432/enrichment_threat?sslmode=disable
+      ASSIGNMENT_DATABASE_URL: postgres://cursor:qwerty@postgres:5432/assignment_ref?sslmode=disable
+      ATTACHMENT_DATABASE_URL: postgres://cursor:qwerty@postgres:5432/attachments?sslmode=disable
+      AUDIT_DATABASE_URL: postgres://cursor:qwerty@postgres:5432/audit?sslmode=disable
+      DB_HOST: postgres
+      DB_PORT: "5432"
+      DB_USER: cursor
+      DB_PASSWORD: qwerty
+      DB_NAME: alert_observable
+      DB_SSLMODE: disable
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  postgres_data:

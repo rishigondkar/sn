@@ -1,0 +1,13 @@
+# Binaries
+/audit-service
+*.exe
+
+# Generated proto (optional: some teams commit these)
+# proto/audit_service/*.pb.go
+
+# IDE / env
+.idea/
+.vscode/
+*.swp
+.env
+.env.local

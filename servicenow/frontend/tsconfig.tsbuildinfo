@@ -1,0 +1,1 @@
+{"root":["./src/app.tsx","./src/main.tsx","./src/vite-env.d.ts","./src/api/client.ts","./src/components/servicenowlayout.tsx","./src/pages/caseform.tsx","./src/pages/caselist.tsx","./src/pages/caseobservableseditpage.tsx","./src/pages/home.tsx","./src/pages/newcaseform.tsx","./src/pages/observabledetailpage.tsx","./src/pages/observablenewpage.tsx"],"version":"5.6.3"}

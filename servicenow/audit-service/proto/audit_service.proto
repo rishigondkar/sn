@@ -1,0 +1,99 @@
+syntax = "proto3";
+
+package audit_service;
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/servicenow/audit-service/proto/audit_service";
+
+service AuditService {
+  rpc IngestEvent(IngestEventRequest) returns (IngestEventResponse);
+  rpc ListAuditEventsByCase(ListAuditEventsByCaseRequest) returns (ListAuditEventsResponse);
+  rpc ListAuditEventsByObservable(ListAuditEventsByObservableRequest) returns (ListAuditEventsResponse);
+  rpc ListAuditEventsByEntity(ListAuditEventsByEntityRequest) returns (ListAuditEventsResponse);
+  rpc ListAuditEventsByActor(ListAuditEventsByActorRequest) returns (ListAuditEventsResponse);
+  rpc ListAuditEventsByCorrelationId(ListAuditEventsByCorrelationIdRequest) returns (ListAuditEventsResponse);
+}
+
+message IngestEventRequest {
+  AuditEvent event = 1;
+}
+
+message IngestEventResponse {
+  bool ingested = 1;  // true if newly stored, false if duplicate event_id
+}
+
+message ListAuditEventsByCaseRequest {
+  string case_id = 1;
+  int32 page_size = 2;
+  string page_token = 3;
+  optional google.protobuf.Timestamp occurred_after = 4;
+  optional google.protobuf.Timestamp occurred_before = 5;
+  bool oldest_first = 6;
+}
+
+message ListAuditEventsByObservableRequest {
+  string observable_id = 1;
+  int32 page_size = 2;
+  string page_token = 3;
+  optional google.protobuf.Timestamp occurred_after = 4;
+  optional google.protobuf.Timestamp occurred_before = 5;
+  bool oldest_first = 6;
+}
+
+message ListAuditEventsByEntityRequest {
+  string entity_type = 1;
+  string entity_id = 2;
+  int32 page_size = 3;
+  string page_token = 4;
+  optional google.protobuf.Timestamp occurred_after = 5;
+  optional google.protobuf.Timestamp occurred_before = 6;
+  bool oldest_first = 7;
+}
+
+message ListAuditEventsByActorRequest {
+  string actor_user_id = 1;
+  int32 page_size = 2;
+  string page_token = 3;
+  optional google.protobuf.Timestamp occurred_after = 4;
+  optional google.protobuf.Timestamp occurred_before = 5;
+  bool oldest_first = 6;
+}
+
+message ListAuditEventsByCorrelationIdRequest {
+  string correlation_id = 1;
+  int32 page_size = 2;
+  string page_token = 3;
+  optional google.protobuf.Timestamp occurred_after = 4;
+  optional google.protobuf.Timestamp occurred_before = 5;
+  bool oldest_first = 6;
+}
+
+message ListAuditEventsResponse {
+  repeated AuditEvent items = 1;
+  string next_page_token = 2;
+}
+
+message AuditEvent {
+  string id = 1;
+  string event_id = 2;
+  string event_type = 3;
+  string source_service = 4;
+  string entity_type = 5;
+  string entity_id = 6;
+  string parent_entity_type = 7;
+  string parent_entity_id = 8;
+  string case_id = 9;
+  string observable_id = 10;
+  string action = 11;
+  string actor_user_id = 12;
+  string actor_name = 13;
+  string request_id = 14;
+  string correlation_id = 15;
+  string change_summary = 16;
+  string before_data_json = 17;
+  string after_data_json = 18;
+  string metadata_json = 19;
+  google.protobuf.Timestamp occurred_at = 20;
+  google.protobuf.Timestamp ingested_at = 21;
+}

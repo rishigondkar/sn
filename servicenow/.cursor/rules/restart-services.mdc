@@ -1,0 +1,21 @@
+---
+description: Restart services after making code changes so new code is loaded.
+globs: 
+  - "**/*.go"
+  - "**/cmd/**"
+  - "**/api/**"
+  - "**/service/**"
+  - "**/handler/**"
+  - "**/clients/**"
+  - "frontend/**"
+---
+
+# Restart services after code changes
+
+Whenever you make changes in any service (or the gateway or frontend), **restart the modified service and any dependent services** so the new code is used.
+
+- **Domain service changed** (case-service, alert-observable-service, assignment-reference-service, enrichment-threat-service, attachment-service, audit-service): kill the running process for that service, then start it again. Then **restart the API Gateway** (it depends on all domain services).
+- **API Gateway changed** (api-gateway-bff): restart the gateway. Restart domain services only if you changed them too.
+- **Frontend changed**: restart the frontend dev server if needed, or rely on Vite hot reload.
+
+After implementing or editing code in a service, include in your response that the user should restart the affected service(s), or run the restart commands yourself (e.g. kill process on the service port, then start the service and gateway in the background). See `RUN.md` for start commands and the "Restarting services after code changes" section.

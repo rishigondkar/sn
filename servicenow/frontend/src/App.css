@@ -1,0 +1,4 @@
+/* App shell – main content only; header is in Layout */
+.app-main {
+  min-height: calc(100vh - 48px);
+}

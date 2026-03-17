@@ -1,0 +1,242 @@
+syntax = "proto3";
+
+package case_service;
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/servicenow/case-service/proto/case_service";
+
+service CaseService {
+  rpc CreateCase(CreateCaseRequest) returns (CreateCaseResponse);
+  rpc UpdateCase(UpdateCaseRequest) returns (UpdateCaseResponse);
+  rpc AssignCase(AssignCaseRequest) returns (AssignCaseResponse);
+  rpc CloseCase(CloseCaseRequest) returns (CloseCaseResponse);
+  rpc AddWorknote(AddWorknoteRequest) returns (AddWorknoteResponse);
+  rpc GetCase(GetCaseRequest) returns (GetCaseResponse);
+  rpc ListCases(ListCasesRequest) returns (ListCasesResponse);
+  rpc ListWorknotes(ListWorknotesRequest) returns (ListWorknotesResponse);
+}
+
+message CreateCaseRequest {
+  string short_description = 1;
+  string description = 2;
+  string state = 3;
+  string priority = 4;
+  string severity = 5;
+  string opened_by_user_id = 6;
+  google.protobuf.Timestamp opened_time = 7;
+  google.protobuf.Timestamp event_occurred_time = 8;
+  google.protobuf.Timestamp event_received_time = 9;
+  string affected_user_id = 10;
+  string assigned_user_id = 11;
+  string assignment_group_id = 12;
+  string alert_rule_id = 13;
+  string accuracy = 14;
+  string determination = 15;
+  string impact = 16;
+  google.protobuf.Timestamp followup_time = 17;
+  string category = 18;
+  string subcategory = 19;
+  string source = 20;
+  string source_tool = 21;
+  string source_tool_feature = 22;
+  string configuration_item = 23;
+  string soc_notes = 24;
+  string next_steps = 25;
+  string csirt_classification = 26;
+  string soc_lead_user_id = 27;
+  google.protobuf.Timestamp notification_time = 28;
+  bool is_affected_user_vip = 29;
+  string requested_by_user_id = 30;
+  string environment_level = 31;
+  string environment_type = 32;
+  string pdn = 33;
+  string impacted_object = 34;
+  string mttr = 35;
+  string engineering_document = 36;
+  string response_document = 37;
+}
+
+message CreateCaseResponse {
+  string id = 1;
+  string case_number = 2;
+}
+
+message UpdateCaseRequest {
+  string id = 1;
+  optional string short_description = 2;
+  optional string description = 3;
+  optional string state = 4;
+  optional string priority = 5;
+  optional string severity = 6;
+  optional string affected_user_id = 7;
+  optional string assigned_user_id = 8;
+  optional string assignment_group_id = 9;
+  optional string accuracy = 10;
+  optional string determination = 11;
+  optional string impact = 12;
+  int32 version_no = 13;
+  optional google.protobuf.Timestamp followup_time = 14;
+  optional string category = 15;
+  optional string subcategory = 16;
+  optional string source = 17;
+  optional string source_tool = 18;
+  optional string source_tool_feature = 19;
+  optional string configuration_item = 20;
+  optional string soc_notes = 21;
+  optional string next_steps = 22;
+  optional string csirt_classification = 23;
+  optional string soc_lead_user_id = 24;
+  optional google.protobuf.Timestamp notification_time = 25;
+  optional bool is_affected_user_vip = 26;
+  optional string requested_by_user_id = 27;
+  optional string environment_level = 28;
+  optional string environment_type = 29;
+  optional string pdn = 30;
+  optional string impacted_object = 31;
+  optional string mttr = 32;
+  optional int32 reassignment_count = 33;
+  optional int32 assigned_to_count = 34;
+  optional string engineering_document = 35;
+  optional string response_document = 36;
+  optional string closure_reason = 37;
+  optional google.protobuf.Timestamp event_occurred_time = 38;
+}
+
+message UpdateCaseResponse {
+  Case case = 1;
+}
+
+message AssignCaseRequest {
+  string case_id = 1;
+  string assigned_user_id = 2;
+  string assignment_group_id = 3;
+  int32 version_no = 4;
+}
+
+message AssignCaseResponse {
+  Case case = 1;
+}
+
+message CloseCaseRequest {
+  string case_id = 1;
+  string closure_code = 2;
+  string closure_reason = 3;
+  int32 version_no = 4;
+}
+
+message CloseCaseResponse {
+  Case case = 1;
+}
+
+message AddWorknoteRequest {
+  string case_id = 1;
+  string note_text = 2;
+  string note_type = 3;
+  string created_by_user_id = 4;
+}
+
+message AddWorknoteResponse {
+  Worknote worknote = 1;
+}
+
+message GetCaseRequest {
+  string case_id = 1;
+}
+
+message GetCaseResponse {
+  Case case = 1;
+}
+
+message ListCasesRequest {
+  int32 page_size = 1;
+  string page_token = 2;
+  optional string state = 3;
+  optional string priority = 4;
+  optional string severity = 5;
+  optional string assignment_group_id = 6;
+  optional string assigned_user_id = 7;
+  optional string affected_user_id = 8;
+  optional google.protobuf.Timestamp opened_time_after = 9;
+  optional google.protobuf.Timestamp opened_time_before = 10;
+}
+
+message ListCasesResponse {
+  repeated Case items = 1;
+  string next_page_token = 2;
+}
+
+message ListWorknotesRequest {
+  string case_id = 1;
+  int32 page_size = 2;
+  string page_token = 3;
+}
+
+message ListWorknotesResponse {
+  repeated Worknote items = 1;
+  string next_page_token = 2;
+}
+
+message Case {
+  string id = 1;
+  string case_number = 2;
+  string short_description = 3;
+  string description = 4;
+  string state = 5;
+  string priority = 6;
+  string severity = 7;
+  string opened_by_user_id = 8;
+  google.protobuf.Timestamp opened_time = 9;
+  google.protobuf.Timestamp event_occurred_time = 10;
+  google.protobuf.Timestamp event_received_time = 11;
+  string affected_user_id = 12;
+  string assigned_user_id = 13;
+  string assignment_group_id = 14;
+  string alert_rule_id = 15;
+  int64 active_duration_seconds = 16;
+  string accuracy = 17;
+  string determination = 18;
+  string impact = 19;
+  string closure_code = 20;
+  string closure_reason = 21;
+  string closed_by_user_id = 22;
+  google.protobuf.Timestamp closed_time = 23;
+  bool is_active = 24;
+  int32 version_no = 25;
+  google.protobuf.Timestamp created_at = 26;
+  google.protobuf.Timestamp updated_at = 27;
+  google.protobuf.Timestamp followup_time = 28;
+  string category = 29;
+  string subcategory = 30;
+  string source = 31;
+  string source_tool = 32;
+  string source_tool_feature = 33;
+  string configuration_item = 34;
+  string soc_notes = 35;
+  string next_steps = 36;
+  string csirt_classification = 37;
+  string soc_lead_user_id = 38;
+  string requested_by_user_id = 39;
+  string environment_level = 40;
+  string environment_type = 41;
+  string pdn = 42;
+  string impacted_object = 43;
+  google.protobuf.Timestamp notification_time = 44;
+  string mttr = 45;
+  int32 reassignment_count = 46;
+  int32 assigned_to_count = 47;
+  bool is_affected_user_vip = 48;
+  string engineering_document = 49;
+  string response_document = 50;
+}
+
+message Worknote {
+  string id = 1;
+  string case_id = 2;
+  string note_text = 3;
+  string note_type = 4;
+  string created_by_user_id = 5;
+  google.protobuf.Timestamp created_at = 6;
+  google.protobuf.Timestamp updated_at = 7;
+  bool is_deleted = 8;
+}
